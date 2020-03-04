@@ -1,0 +1,23 @@
+.blockk{
+    display : block;
+    width: 100%;
+    text-align: center;
+    background-color:black;
+    margin-top: 20px;
+    font-family: 'Hammersmith One', sans-serif;
+
+}
+html, body {
+    min-height: 100%;
+}
+body{
+    background-image: linear-gradient(red, yellow, blue);
+    color: white;
+}
+.card{
+    background-color: rgb(172, 224, 50);
+    color:white;
+    margin-bottom: 10px;
+    text-align: center;
+    font-family: 'Hammersmith One', sans-serif;
+}

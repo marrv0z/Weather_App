@@ -4,25 +4,33 @@
         <meta charset = "UTF-8">
         <title>Know The Weather</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Hammersmith+One&display=swap" rel="stylesheet">
         <link rel = "stylesheet" href = "assets/styles.css">
     </head>
     <body>
-        <div class = "container">
+        <div class = "container" id = "PlaceBreak">
             <div class = "row">
-                <label for="searchCity">city name</label>
+                <label for="searchCity">City </label>
                 <input id = "searchCity" value = ""/>
-                <label for="searchState">sate name</label>
+                <label for="searchState">Sate </label>
                 <input id = "searchState" value = ""/>
-                <label for="searchCountry">country code</label>
+                <label for="searchCountry">Country </label>
                 <input id = "searchCountry" value = ""/>
                 <button id = "searchBttn">Search</button>
             </div>
+            <div id = "blockHere"></div>
             <div class = "row" id = "placeHere"></div>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script type="text/javascript">
             var APIkey = "d631c928c53d9d25575ca272ba298c2e";
-            
+            $(window).ready(function() {
+                if(localStorage.getItem("cityN")) {
+                    $("#searchCity").val(localStorage.getItem("cityN"));
+                    $("#searchState").val(localStorage.getItem("stateN"));
+                    $("#searchCountry").val(localStorage.getItem("countryCode"));
+                }
+            });
 
             $("#searchBttn").click(Searching);
 
@@ -44,16 +52,69 @@
                     }
                 }
 
+                function kelvinToFahr(kelvin){
+                    var fahren =((kelvin - 273)*1.8)+32;
+                    return Math.floor(fahren);
+                }
+
                 $.ajax({
                     url:queryURL,
                     method: "GET",
                     //++++dataType: 'json',
                 }).then(function(response){
-                    
+                    localStorage.setItem("cityN", cityN);
+                    localStorage.setItem("stateN", stateN);
+                    localStorage.setItem("countryCode", countryCode);
+
                     console.log(cityN);
                     console.log(stateN);
                     console.log(countryCode);
                     console.log(response);
+
+                    //Display city info
+                    console.log(response.city.name + ", " + response.city.country);
+                    console.log(response.list[4].dt_txt);
+                    console.log("min: " + response.list[4].main.temp_min + " max: " + response.list[4].main.temp_max);
+                    console.log(response.list[4].weather[0].main);
+
+                    console.log(response.list[12].dt_txt);
+                    console.log("min: " + response.list[12].main.temp_min + " max: " + response.list[12].main.temp_max);
+                    console.log(response.list[12].weather[0].main);
+
+                    console.log(response.list[20].dt_txt);
+                    console.log("min: " + response.list[20].main.temp_min + " max: " + response.list[20].main.temp_max);
+                    console.log(response.list[20].weather[0].main);
+
+                    console.log(response.list[28].dt_txt);
+                    console.log("min: " + response.list[28].main.temp_min + " max: " + response.list[28].main.temp_max);
+                    console.log(response.list[28].weather[0].main);
+
+                    console.log(response.list[36].dt_txt);
+                    console.log("min: " + response.list[36].main.temp_min + " max: " + response.list[36].main.temp_max);
+                    console.log(response.list[36].weather[0].main);
+
+                    $("#blockHere").addClass("row").addClass("blockk");
+
+                    var genInfo = $("<p>").html(response.city.name + ", " + response.city.country);
+
+                    //alert("Hey");
+                    
+                    $("#blockHere").html(genInfo);
+                    //$("#PlaceBreak").append($("<br>"));
+                        $("#placeHere").html("");
+
+                    for (var i = 4; i < response.list.length; i += 8){
+                        $("#placeHere").append($("<br>"));
+                        var date = $("<p>").text(response.list[i].dt_txt);
+                        var tempPerDay = $("<p>").text("min: " + kelvinToFahr(response.list[i].main.temp_min) + " max: " + kelvinToFahr(response.list[i].main.temp_max));
+                        var descriptiOn = $("<p>").text(response.list[i].weather[0].main);
+
+                        var cardD = $("<div>").addClass("card");
+                        cardD.append(date).append(tempPerDay).append(descriptiOn);
+                        var col = $("<div>").addClass("col-md-4");
+                        col.append(cardD);
+                        $("#placeHere").append(col);
+                    }
                 });
             }
             
