@@ -122,7 +122,6 @@
                             var lat = response.city[i].coord.lat;
                             var lon = response.city[i].coord.lon;
                             var queryURL2 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
-
                             
                             $.ajax({
                                 url: queryURL2,
