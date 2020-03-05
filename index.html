@@ -41,6 +41,8 @@
                 var countryCode = $("#searchCountry").val();
                 var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityN + "," + stateN + countryCode + "&appid=" + APIkey;
                 
+                
+                
                 function checkState(value){
                     var y = value + ",";
                     var z = "";
@@ -56,6 +58,8 @@
                     var fahren =((kelvin - 273)*1.8)+32;
                     return Math.floor(fahren);
                 }
+
+                
 
                 $.ajax({
                     url:queryURL,
@@ -106,11 +110,32 @@
                     for (var i = 4; i < response.list.length; i += 8){
                         $("#placeHere").append($("<br>"));
                         var date = $("<p>").text(response.list[i].dt_txt);
-                        var tempPerDay = $("<p>").text("min: " + kelvinToFahr(response.list[i].main.temp_min) + " max: " + kelvinToFahr(response.list[i].main.temp_max));
-                        var descriptiOn = $("<p>").text(response.list[i].weather[0].main);
+                        var actualTemp = $("<p>").text("Now: " + kelvinToFahr(response.list[i].main.temp + "\u00B0F"));
+                        var tempPerDay = $("<p>").text("min: " + kelvinToFahr(response.list[i].main.temp_min) + "\u00B0F max: " + kelvinToFahr(response.list[i].main.temp_max) + "\u00B0F");
+                        var descriptiOn = $("<p>").text(response.list[i].weather[0].description).append($("<img>").attr("src", "assets/" + response.list[i].weather[0].main + ".ico"));
+                        var windSP = $("<p>").text("Wind speed: " + response.list[i].wind.speed);
+                        var humid = $("<p>").text("Humidity: " + response.list[i].main.humidity);
+
+                        /*var UVi = $("<p>");
+
+                        function UVIndex(response){
+                            var lat = response.city[i].coord.lat;
+                            var lon = response.city[i].coord.lon;
+                            var queryURL2 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
+
+                            
+                            $.ajax({
+                                url: queryURL2,
+                                method: "GET"
+                            }).then(function(result){
+                                console.log(result.value);
+                                UVi.text("UV: " + result.value);
+                            });
+                        }
+                        UVIndex(response);*/
 
                         var cardD = $("<div>").addClass("card");
-                        cardD.append(date).append(tempPerDay).append(descriptiOn);
+                        cardD.append(date).append(tempPerDay).append(descriptiOn).append(windSP).append(humid);//.append(UVi);
                         var col = $("<div>").addClass("col-md-4");
                         col.append(cardD);
                         $("#placeHere").append(col);
