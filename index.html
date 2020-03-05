@@ -39,7 +39,7 @@
                 var cityN = $("#searchCity").val();
                 var stateN = checkState($("#searchState").val()); 
                 var countryCode = $("#searchCountry").val();
-                var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityN + "," + stateN + countryCode + "&appid=" + APIkey;
+                var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityN + "," + stateN + countryCode + "&appid=" + APIkey;
                 
                 
                 
@@ -121,7 +121,7 @@
                         function UVIndex(response){
                             var lat = response.city[i].coord.lat;
                             var lon = response.city[i].coord.lon;
-                            var queryURL2 = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
+                            var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=" + APIkey;
                             
                             $.ajax({
                                 url: queryURL2,
